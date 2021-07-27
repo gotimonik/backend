@@ -1,0 +1,16 @@
+branches: ['master', { name: 'develop', prerelease: 'dev' }]
+dryRun: false
+debug: true
+ci: false # Try to publish even though Gcloud isn't picked up as a CI environment.
+plugins:
+  [
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
+    [
+      '@semantic-release/github',
+      {
+        releasedLabels: ['Deployed: ${nextRelease.version}'],
+        failComment: false,
+      },
+    ],
+  ]
