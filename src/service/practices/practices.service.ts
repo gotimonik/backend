@@ -12,7 +12,7 @@ export default async function getPracticesFromCsv(queryParams: ParsedQs): Promis
   let practices: Practices[] = [];
   const cachePractices = await NodeCacheService.retrieveKey('practices');
   if (cachePractices) {
-    practices = cachePractices.slice(offset, limit);
+    practices = cachePractices.slice(offset, limit + offset);
   } else {
     const fileContent = await fs.promises.readFile(`./practices.csv`);
     const records = parse(fileContent, { columns: true, delimiter: ';', autoParse: true });
@@ -23,7 +23,7 @@ export default async function getPracticesFromCsv(queryParams: ParsedQs): Promis
         return record;
       });
       await NodeCacheService.storeKey('practices', sortedRecords);
-      practices = sortedRecords.slice(offset, limit);
+      practices = sortedRecords.slice(offset, limit + offset);
     }
   }
   return practices;

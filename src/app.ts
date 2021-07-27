@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import cls from 'cls-hooked';
 import express from 'express';
 import * as http from 'http';
+import cors from 'cors';
 import methodOverride from 'method-override';
 import path from 'path';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -19,6 +20,13 @@ const app = express();
 app.use(correlation(cls.createNamespace(CORRELATOR_NAMESPACE)));
 
 app.use(methodOverride());
+
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200, // For legacy browser support
+};
+
+app.use(cors(corsOptions));
 
 // Middleware that transforms the raw string of req.body into json
 app.use(bodyParser.json());
